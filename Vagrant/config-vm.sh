@@ -10,6 +10,13 @@ while [[ $count -ne 0 ]] ; do
     fi
 done
 
+cat << EOF >> /etc/hosts
+192.168.0.1 vmhost
+192.168.0.2 ansiblemaster
+192.168.0.3 kubemaster
+192.168.0.4 kubeworker1
+EOF
+
 if [[ $rc -eq 0 ]] ; then
 
 echo 'proxy=http://10.61.11.42:3128' | tee -a /etc/yum.conf
@@ -17,7 +24,7 @@ echo 'proxy=http://10.61.11.42:3128' | tee -a /etc/yum.conf
 cat << EOF >> /home/vagrant/.bashrc
 export http_proxy=http://10.61.11.42:3128
 export https_proxy=http://10.61.11.42:3128
-no_proxy=localhost,127.0.0.1,192.168.0.1/27
+export no_proxy=localhost,127.0.0.1,ansiblemaster,kubemaster,worker,vmhost
 EOF
 
 yum install epel-release -y
@@ -28,3 +35,4 @@ fi
 yum update -y
 yum install epel-release -y
 yum update -y
+yum install gdisk netstat

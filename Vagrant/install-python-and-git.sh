@@ -1,3 +1,19 @@
+((count = 10))
+while [[ $count -ne 0 ]] ; do
+    ping -c 1 10.61.11.42
+    rc=$?
+    if [[ $rc -eq 0 ]] ; then
+        ((count = 0))
+    else
+    ((count = count - 1))
+    fi
+done
+
+if [[ $rc -eq 0 ]] ; then
+  export http_proxy=http://10.61.11.42:3128
+  export https_proxy=http://10.61.11.42:3128
+fi
+
 yum groupinstall "Development Tools" -y
 yum install openssl-devel libffi-devel bzip2-devel -y
 

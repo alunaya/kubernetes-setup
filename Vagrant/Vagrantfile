@@ -1,28 +1,28 @@
 Vagrant.configure("2") do |config|
-
   config.vm.provision "shell", path: "config-vm.sh"
+  config.proxy.enabled = false
 
-  config.vm.define "kube-master" do |master|
+  config.vm.define "kubemaster" do |master|
     master.vm.box = "centos/7"
     master.vm.network "private_network", ip:"192.168.0.3", name: "VirtualBox Host-Only Ethernet Adapter #4"
     master.vm.provider "virtual_box" do |v|
-      v.cpu = 2
-      v.memory = 2048
+      v.cpu = 4
+      v.memory = 4096
     end
-    #master.vm.disk :disk, name: "root", size: "30GB"
+    master.vm.disk :disk, size: "50GB", name: "gluster"
   end
 
-  config.vm.define "worker#1" do |worker1|
+  config.vm.define "kubeworker1" do |worker1|
     worker1.vm.box = "centos/7"
     worker1.vm.network "private_network", ip:"192.168.0.4", name: "VirtualBox Host-Only Ethernet Adapter #4"
     worker1.vm.provider "virtual_box" do |d|
       d.cpu = 4
       d.memory = 4096
     end
-    #worker1.vm.disk :disk, name: "root", size: "30GB"
+    worker1.vm.disk :disk, size: "50GB", name: "gluster"
   end
 
-  config.vm.define "ansible-master" do |ansiblemaster|
+  config.vm.define "ansiblemaster" do |ansiblemaster|
     ansiblemaster.vm.box = "centos/7"
     ansiblemaster.vm.network "private_network", ip:"192.168.0.2", name: "VirtualBox Host-Only Ethernet Adapter #4"
     ansiblemaster.vm.provider "virtual_box" do |d|
@@ -31,6 +31,5 @@ Vagrant.configure("2") do |config|
     end
     ansiblemaster.vm.provision "shell", path: "install-python-and-git.sh"
     ansiblemaster.vm.provision "shell", path: "install-ansible.sh", privileged: false
-    #worker1.vm.disk :disk, name: "root", size: "30GB"
   end
 end
