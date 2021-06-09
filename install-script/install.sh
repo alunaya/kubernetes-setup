@@ -1,6 +1,6 @@
 #install kubernetes version 1.21
 VERSION=1.21
-OS=CentOS_7
+OS=CentOS_8
 
 #config iptables for bridge network
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf

@@ -28,11 +28,11 @@ fi
 sudo yum update -y
 sudo yum install cri-o -y
 
-cat <<EOF | sudo tee /etc/crio/crio.conf.d/02-cgroup-manager.conf
-[crio.runtime]
-conmon_cgroup = "pod"
-cgroup_manager = "cgroupfs"
-EOF
+# cat <<EOF | sudo tee /etc/crio/crio.conf.d/02-cgroup-manager.conf
+# [crio.runtime]
+# conmon_cgroup = "pod"
+# cgroup_manager = "cgroupfs"
+# EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable crio --now
