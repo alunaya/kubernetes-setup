@@ -26,13 +26,4 @@ export http_proxy=http://10.61.11.42:3128
 export https_proxy=http://10.61.11.42:3128
 export no_proxy=localhost,127.0.0.1,ansiblemaster,kubemaster,worker,vmhost
 EOF
-
-yum install epel-release -y
-yum update -y
-exit
 fi
-
-yum update -y
-yum install epel-release -y
-yum update -y
-yum install gdisk netstat

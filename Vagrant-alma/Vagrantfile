@@ -3,9 +3,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "install-package.sh"
   config.proxy.enabled = false
 
-  config.vm.define "kubemaster" do |master|
-    master.vm.box = "centos/7"
-    master.vm.network "private_network", ip:"192.168.0.3", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+  config.vm.define "alma-kubemaster" do |master|
+    master.vm.box = "alma/8"
+    master.vm.network "private_network", ip:"192.168.0.21", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     master.vm.provider "virtual_box" do |v|
       v.cpu = 4
       v.memory = 4096
@@ -13,9 +13,9 @@ Vagrant.configure("2") do |config|
     master.vm.disk :disk, size: "50GB", name: "kubemaster-gluster"
   end
 
-  config.vm.define "kubeworker1" do |worker1|
-    worker1.vm.box = "centos/7"
-    worker1.vm.network "private_network", ip:"192.168.0.4", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+  config.vm.define "alma-kubeworker1" do |worker1|
+    worker1.vm.box = "alma/8"
+    worker1.vm.network "private_network", ip:"192.168.0.22", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     worker1.vm.provider "virtual_box" do |d|
       d.cpu = 4
       d.memory = 4096
@@ -23,9 +23,9 @@ Vagrant.configure("2") do |config|
     worker1.vm.disk :disk, size: "50GB", name: "kubeworker1-gluster"
   end
 
-  config.vm.define "ansiblemaster" do |ansiblemaster|
-    ansiblemaster.vm.box = "centos/7"
-    ansiblemaster.vm.network "private_network", ip:"192.168.0.2", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+  config.vm.define "alma-ansiblemaster" do |ansiblemaster|
+    ansiblemaster.vm.box = "alma/8"
+    ansiblemaster.vm.network "private_network", ip:"192.168.0.20", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     ansiblemaster.vm.provider "virtual_box" do |d|
       d.cpu = 2
       d.memory = 2048
