@@ -1,0 +1,15 @@
+[kubeadm init error]
+
+- must run with root priviledge
+- must have more than 2 cpu and 1700mb ram
+
+- [ERROR Swap]: running with swap on is not supported. Please disable swap
+  + sudo swapoff -a
+  + remove swap line from /etc/fstab
+
+- Pulling image behind proxy with crio
+  + Change /etc/sysconfig/crio
+    NO_PROXY="localhost,127.0.0.1,192.168.0.0/27"
+    HTTP_PROXY="http://10.61.11.42:3128/"
+    HTTPS_PROXY="http://10.61.11.42:3128/"
+  + Then restart with systemctl restart crio

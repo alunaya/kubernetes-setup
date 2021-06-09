@@ -5,32 +5,35 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alma-kubemaster" do |master|
     master.vm.box = "almalinux/8"
-    master.vm.network "private_network", ip:"192.168.0.21", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
-    master.vm.provider "virtual_box" do |v|
-      v.cpu = 4
+    master.vm.network "private_network", ip:"192.168.0.3", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+    master.vm.provider "virtualbox" do |v|
+      v.cpus = 4
       v.memory = 4096
     end
+    master.vm.provision "shell", inline: "echo 'alma-kubemaster' | tee /etc/hostname"
     master.vm.disk :disk, size: "50GB", name: "kubemaster-gluster"
   end
 
   config.vm.define "alma-kubeworker1" do |worker1|
     worker1.vm.box = "almalinux/8"
-    worker1.vm.network "private_network", ip:"192.168.0.22", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
-    worker1.vm.provider "virtual_box" do |d|
-      d.cpu = 4
+    worker1.vm.network "private_network", ip:"192.168.0.4", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+    worker1.vm.provider "virtualbox" do |d|
+      d.cpus = 4
       d.memory = 4096
     end
+    worker1.vm.provision "shell", inline: "echo 'alma-kubeworker1' | tee /etc/hostname"
     worker1.vm.disk :disk, size: "50GB", name: "kubeworker1-gluster"
   end
 
   config.vm.define "alma-ansiblemaster" do |ansiblemaster|
     ansiblemaster.vm.box = "almalinux/8"
-    ansiblemaster.vm.network "private_network", ip:"192.168.0.20", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
-    ansiblemaster.vm.provider "virtual_box" do |d|
-      d.cpu = 2
+    ansiblemaster.vm.network "private_network", ip:"192.168.0.2", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+    ansiblemaster.vm.provider "virtualbox" do |d|
+      d.cpus = 2
       d.memory = 2048
     end
     ansiblemaster.vm.disk :disk, size: "10GB", name: "ansible-gluster"
+    ansiblemaster.vm.provision "shell", inline: "echo 'alma-ansiblemaster' | tee /etc/hostname"
     ansiblemaster.vm.provision "shell", path: "install-ansible.sh", privileged: false
   end
 end

@@ -44,7 +44,6 @@ dnf update -y
 dnf install --enablerepo='centos-extras' glusterfs-server -y
 systemctl enable glusterd --now
 
-
 mkdir -p /data/brick1
 echo '/dev/sdb1 /data/brick1  xfs defaults  0 0' | sudo tee -a /etc/fstab
 # mkfs -t xfs -i size=512 /dev/sdb1

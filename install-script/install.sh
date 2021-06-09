@@ -16,3 +16,16 @@ sudo sysctl --system
 #install container runtime(CRI-O)
 source install-container-runtime.sh
 source intall-kubelet.sh
+
+#init kubeadm
+kubeadm init --pod-network-cidr=10.217.0.0/16 --apiserver-advertise-address=192.168.0.3 -v=5
+
+# mkdir -p $HOME/.kube
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+source install-cilium.sh
+
+#join workernode
+kubeadm join 192.168.0.3:6443 --token gkm4re.cq3wscabntzcxjmm \
+        --discovery-token-ca-cert-hash sha256:44578e59228aec56593bf62c79810102fe20eb50c023483adb12541e33730673
