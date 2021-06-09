@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   config.proxy.enabled = false
 
   config.vm.define "alma-kubemaster" do |master|
-    master.vm.box = "alma/8"
+    master.vm.box = "almalinux/8"
     master.vm.network "private_network", ip:"192.168.0.21", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     master.vm.provider "virtual_box" do |v|
       v.cpu = 4
@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "alma-kubeworker1" do |worker1|
-    worker1.vm.box = "alma/8"
+    worker1.vm.box = "almalinux/8"
     worker1.vm.network "private_network", ip:"192.168.0.22", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     worker1.vm.provider "virtual_box" do |d|
       d.cpu = 4
@@ -24,14 +24,13 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "alma-ansiblemaster" do |ansiblemaster|
-    ansiblemaster.vm.box = "alma/8"
+    ansiblemaster.vm.box = "almalinux/8"
     ansiblemaster.vm.network "private_network", ip:"192.168.0.20", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
     ansiblemaster.vm.provider "virtual_box" do |d|
       d.cpu = 2
       d.memory = 2048
     end
     ansiblemaster.vm.disk :disk, size: "10GB", name: "ansible-gluster"
-    ansiblemaster.vm.provision "shell", path: "install-python-and-git.sh"
     ansiblemaster.vm.provision "shell", path: "install-ansible.sh", privileged: false
   end
 end

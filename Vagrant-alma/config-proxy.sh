@@ -12,9 +12,9 @@ done
 
 cat << EOF >> /etc/hosts
 192.168.0.1 vmhost
-192.168.0.2 ansiblemaster
-192.168.0.3 kubemaster
-192.168.0.4 kubeworker1
+192.168.0.20 alma-ansiblemaster
+192.168.0.21 alma-kubemaster
+192.168.0.22 alma-kubeworker1
 EOF
 
 if [[ $rc -eq 0 ]] ; then

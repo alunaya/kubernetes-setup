@@ -1,3 +1,8 @@
+sudo dnf update -y
+sudo dnf install wget -y
+sudo dnf install python39 -y
+sudo dnf install git -y
+pip3 install --user wheel
 pip3 install --user ansible
 pip3 install --user paramiko
 
