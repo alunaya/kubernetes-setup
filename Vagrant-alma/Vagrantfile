@@ -1,18 +1,7 @@
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "config-proxy.sh"
-  config.vm.provision "shell", path: "install-package.sh"
+  config.vm.provision "shell", path: "install-gluster.sh"
   config.proxy.enabled = false
-
-  config.vm.define "alma-kubemaster" do |master|
-    master.vm.box = "almalinux/8"
-    master.vm.network "private_network", ip:"192.168.0.3", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
-    master.vm.provider "virtualbox" do |v|
-      v.cpus = 4
-      v.memory = 4096
-    end
-    master.vm.provision "shell", inline: "echo 'alma-kubemaster' | tee /etc/hostname"
-    master.vm.disk :disk, size: "50GB", name: "kubemaster-gluster"
-  end
 
   config.vm.define "alma-kubeworker1" do |worker1|
     worker1.vm.box = "almalinux/8"
@@ -21,7 +10,7 @@ Vagrant.configure("2") do |config|
       d.cpus = 4
       d.memory = 4096
     end
-    worker1.vm.provision "shell", inline: "echo 'alma-kubeworker1' | tee /etc/hostname"
+    worker1.vm.provision "shell", inline: "hostnamectl set-hostname alma-kubeworker1"
     worker1.vm.disk :disk, size: "50GB", name: "kubeworker1-gluster"
   end
 
@@ -33,7 +22,21 @@ Vagrant.configure("2") do |config|
       d.memory = 2048
     end
     ansiblemaster.vm.disk :disk, size: "10GB", name: "ansible-gluster"
-    ansiblemaster.vm.provision "shell", inline: "echo 'alma-ansiblemaster' | tee /etc/hostname"
+    ansiblemaster.vm.provision "shell", inline: "hostnamectl set-hostname alma-ansiblemaster"
+    config.vm.provision "shell", path: "install-kubeadm.sh"
     ansiblemaster.vm.provision "shell", path: "install-ansible.sh", privileged: false
+  end
+
+  config.vm.define "alma-kubemaster" do |master|
+    master.vm.box = "almalinux/8"
+    master.vm.network "private_network", ip:"192.168.0.3", name: "VirtualBox Host-Only Ethernet Adapter #4", netmask:"255.255.255.224"
+    master.vm.provider "virtualbox" do |v|
+      v.cpus = 4
+      v.memory = 4096
+    end
+    master.vm.provision "shell", inline: "hostnamectl set-hostname alma-kubemaster"
+    config.vm.provision "shell", path: "config-gluster.sh"
+    config.vm.provision "shell", path: "install-kubeadm.sh"
+    master.vm.disk :disk, size: "50GB", name: "kubemaster-gluster"
   end
 end

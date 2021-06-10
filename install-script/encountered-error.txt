@@ -13,3 +13,6 @@
     HTTP_PROXY="http://10.61.11.42:3128/"
     HTTPS_PROXY="http://10.61.11.42:3128/"
   + Then restart with systemctl restart crio
+
+- cần update lên runc 1.0-rc95 (trên yum repo là 1.0-rc92) 
+- build runc từ source cần cài (golang, libseccomp-devel)

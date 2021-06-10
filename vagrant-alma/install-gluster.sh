@@ -37,14 +37,15 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Official
 EOF
 
-
 dnf --enablerepo='centos-extras' update -y
-dnf --enablerepo='centos-extras' install gdisk net-tools centos-release-gluster epel-release -y
+dnf --enablerepo='centos-extras' install gdisk net-tools centos-release-gluster wget -y
 dnf update -y
 dnf install --enablerepo='centos-extras' glusterfs-server -y
 systemctl enable glusterd --now
 
+sgdisk -a=2048 -N=1 /dev/sdb
 mkdir -p /data/brick1
 echo '/dev/sdb1 /data/brick1  xfs defaults  0 0' | sudo tee -a /etc/fstab
-# mkfs -t xfs -i size=512 /dev/sdb1
-# mkdir /data/brick1/gv0
+mkfs -t xfs -i size=512 /dev/sdb1
+mount -a
+mkdir /data/brick1/gv0
