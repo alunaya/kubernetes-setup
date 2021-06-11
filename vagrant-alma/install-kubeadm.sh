@@ -19,6 +19,9 @@ fi
 VERSION=1.21
 OS=CentOS_8
 
+#set pod network CIDR
+POD_NETWORK_CIDR=10.217.0.0/16
+
 #config iptables for bridge network
 cat <<EOF | tee /etc/modules-load.d/k8s.conf
 br_netfilter
@@ -110,7 +113,7 @@ if [ -z ${http_proxy} ] ; then
 echo "no proxy configured"
 else
 cat << EOF | tee -a /etc/sysconfig/crio
-NO_PROXY="localhost,127.0.0.1,192.168.0.0/27"
+NO_PROXY="localhost,127.0.0.1,192.168.0.0/27,$POD_NETWORK_CIDR"
 HTTP_PROXY="http://10.61.11.42:3128/"
 HTTPS_PROXY="http://10.61.11.42:3128/"
 EOF
@@ -143,8 +146,15 @@ sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 #enable kubelet
 sudo systemctl enable --now kubelet
 
+#init kubeadm
+# kubeadm init --pod-network-cidr=10.217.0.0/16 --apiserver-advertise-address=192.168.0.3 -v=5
+
+# mkdir -p $HOME/.kube
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install cilium
+# cd ~
 # curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 # chmod 700 get_helm.sh
 # ./get_helm.sh
@@ -157,3 +167,6 @@ sudo systemctl enable --now kubelet
 # sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
 # sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
 # rm cilium-linux-amd64.tar.gz{,.sha256sum}
+
+kubeadm join 192.168.0.3:6443 --token 43pc7x.n91vuzc0njm8nhag \
+        --discovery-token-ca-cert-hash sha256:32b88f457e2949bc3267ab5749b00b566b8301b1541ce88ccf687c93c56b508a
