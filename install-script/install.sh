@@ -30,7 +30,3 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 # sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 source install-cilium.sh
-
-#join workernode
-kubeadm join 192.168.0.3:6443 --token gkm4re.cq3wscabntzcxjmm \
-        --discovery-token-ca-cert-hash sha256:44578e59228aec56593bf62c79810102fe20eb50c023483adb12541e33730673

@@ -146,6 +146,14 @@ sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 #enable kubelet
 sudo systemctl enable --now kubelet
 
+#install helm
+cd ~
+wget https://get.helm.sh/helm-v3.6.0-linux-amd64.tar.gz
+tar -xzvf helm-*
+sudo cp ./linux-amd64/helm /usr/local/bin/
+rm -rf ~/linux-amd64 ~/helm-*
+helm repo add cilium https://helm.cilium.io/
+
 #init kubeadm
 # kubeadm init --pod-network-cidr=10.217.0.0/16 --apiserver-advertise-address=192.168.0.3 -v=5
 
@@ -167,6 +175,3 @@ sudo systemctl enable --now kubelet
 # sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
 # sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
 # rm cilium-linux-amd64.tar.gz{,.sha256sum}
-
-kubeadm join 192.168.0.3:6443 --token 43pc7x.n91vuzc0njm8nhag \
-        --discovery-token-ca-cert-hash sha256:32b88f457e2949bc3267ab5749b00b566b8301b1541ce88ccf687c93c56b508a

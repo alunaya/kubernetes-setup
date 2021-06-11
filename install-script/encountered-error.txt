@@ -16,3 +16,5 @@
 
 - cần update lên runc 1.0-rc95 (trên yum repo là 1.0-rc92) 
 - build runc từ source cần cài (golang, libseccomp-devel)
+
+- vagrant ssh không hoạt động vì cilium iptables rule chặn kết nối ssh localhost
