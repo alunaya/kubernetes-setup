@@ -154,6 +154,12 @@ sudo cp ./linux-amd64/helm /usr/local/bin/
 rm -rf ~/linux-amd64 ~/helm-*
 helm repo add cilium https://helm.cilium.io/
 
+#install cilium cli
+curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+rm cilium-linux-amd64.tar.gz{,.sha256sum}
+
 #init kubeadm
 # kubeadm init --pod-network-cidr=10.217.0.0/16 --apiserver-advertise-address=192.168.0.3 -v=5
 
